@@ -70,6 +70,7 @@ public class Streak
 		
 		config = ConfigHandler.createConfig(event.getSuggestedConfigurationFile(), "streak", "Streak", logger, instance);
 		config.createOrUpdateIntProperty("basics", "Basics", "streakTime", "Streak Time", "How long (in ticks) do streaks last?", true, 100, 0, Integer.MAX_VALUE);
+		config.createOrUpdateIntProperty("basics", "Basics", "playersFollowYourFavouriteFlavour", "Player Flavour", "Do players follow your favourite flavour?", true, 0, 0, 1);
 		config.createOrUpdateStringProperty("basics", "Basics", "favouriteFlavour", "Favourite Flavour", "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.", true, "");
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityStreak.class, new RenderStreak());

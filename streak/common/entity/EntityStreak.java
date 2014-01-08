@@ -1,5 +1,6 @@
 package streak.common.entity;
 
+import streak.common.Streak;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,8 @@ public class EntityStreak extends Entity
 	public EntityLivingBase parent;
 	
 	public long lastUpdate;
+
+	public int flavour;
 	
 	public EntityStreak(World par1World) 
 	{
@@ -35,6 +38,8 @@ public class EntityStreak extends Entity
 		lastUpdate = par1World.getWorldTime();
 		ignoreFrustumCheck = true;
 		renderDistanceWeight = 10D;
+		
+		flavour = ent.getRNG().nextInt(Streak.flavours.size());
 	}
 	
 	@Override

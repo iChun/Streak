@@ -23,8 +23,6 @@ import streak.common.entity.EntityStreak;
 
 public class RenderStreak extends Render 
 {
-
-	public Random rand = new Random(); 
 	
 	public RenderStreak()
 	{
@@ -54,14 +52,13 @@ public class RenderStreak extends Render
 		BufferedImage image;
 		
 		Integer flavour = Streak.flavourNames.get(Streak.config.getString("favouriteFlavour").toLowerCase());
-		if(flavour != null)
+		if(flavour != null && (Streak.config.getInt("playersFollowYourFavouriteFlavour") == 1 && player != Minecraft.getMinecraft().thePlayer || player == Minecraft.getMinecraft().thePlayer))
 		{
 			image = Streak.flavours.get(flavour);
 		}
 		else
 		{
-			rand.setSeed(Math.abs(player.username.hashCode()));
-			image = Streak.flavours.get(rand.nextInt(Streak.flavours.size()));
+			image = Streak.flavours.get(hat.flavour);
 		}
         
         if (image != null)
