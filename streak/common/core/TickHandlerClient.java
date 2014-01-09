@@ -125,7 +125,7 @@ public class TickHandlerClient implements ITickHandler {
 		LocationInfo newest = loc.get(loc.size() - 2);
 		double distX = newest.posX - oldest.posX;
 		double distZ = newest.posZ - oldest.posZ;
-		oldest.startU = newest.startU + (Math.sqrt(distX * distX + distZ * distZ) / oldest.height);
+		oldest.startU = newest.startU + (Math.sqrt(distX * distX + distZ * distZ) / newest.height);
 		while(oldest.startU > 1.0D)
 		{
 			oldest.startU--;
@@ -147,6 +147,10 @@ public class TickHandlerClient implements ITickHandler {
 			{
 				loc.add(0, new LocationInfo(player));
 			}
+		}
+		else if(loc.size() > time)
+		{
+			loc.remove(0);
 		}
 		return loc;
 	}

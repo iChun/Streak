@@ -157,9 +157,14 @@ public class RenderStreak extends Render
 		        {
 		        	endTex--;
 		        }
+		        while(endTex < 0)
+		        {
+		        	endTex++;
+		        }
 				double distX = infoStart.posX - infoEnd.posX;
 				double distZ = infoStart.posZ - infoEnd.posZ;
-				double scales = Math.sqrt(distX * distX + distZ * distZ) / infoEnd.height;
+				double scales = Math.sqrt(distX * distX + distZ * distZ) / infoStart.height;
+				boolean far = scales > 1D;
 				while(scales > 1D)
 				{
 					endTex++;
