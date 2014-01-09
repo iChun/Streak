@@ -157,6 +157,14 @@ public class RenderStreak extends Render
 		        {
 		        	endTex--;
 		        }
+				double distX = infoStart.posX - infoEnd.posX;
+				double distZ = infoStart.posZ - infoEnd.posZ;
+				double scales = Math.sqrt(distX * distX + distZ * distZ) / infoEnd.height;
+				while(scales > 1D)
+				{
+					endTex++;
+					scales--;
+				}
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY + infoEnd.height	, nextPosZ - posZ, endTex, 0.0D);
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY					, nextPosZ - posZ, endTex, 1.0D);
 		        tessellator.draw();

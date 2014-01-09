@@ -57,6 +57,12 @@ public class EntityStreak extends Entity
 	}
 	
 	@Override
+    public boolean shouldRenderInPass(int pass)
+    {
+        return pass == 1;
+    }
+	
+	@Override
     public int getBrightnessForRender(float par1)
     {
 		return 15728880;

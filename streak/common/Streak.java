@@ -39,7 +39,7 @@ public class Streak
 	implements IConfigUser
 {
 
-	public static final String version = "2.0.0";
+	public static final String version = "2.0.1";
 
 	@Instance("Streak")
 	public static Streak instance;
