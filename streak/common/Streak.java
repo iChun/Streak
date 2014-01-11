@@ -25,6 +25,7 @@ import streak.common.entity.EntityStreak;
 import streak.common.render.RenderStreak;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -39,7 +40,7 @@ public class Streak
 	implements IConfigUser
 {
 
-	public static final String version = "2.0.1";
+	public static final String version = "2.1.0";
 
 	@Instance("Streak")
 	public static Streak instance;
@@ -50,7 +51,7 @@ public class Streak
 
 	public static TickHandlerClient tickHandlerClient;
 	
-	public static int flavourCount;
+	public static boolean hasMorphMod;
 	
 	public static HashMap<String, Integer> flavourNames = new HashMap<String, Integer>();
 	public static HashMap<Integer, BufferedImage> flavours = new HashMap<Integer, BufferedImage>();
@@ -71,6 +72,7 @@ public class Streak
 		config = ConfigHandler.createConfig(event.getSuggestedConfigurationFile(), "streak", "Streak", logger, instance);
 		config.createOrUpdateIntProperty("basics", "Basics", "streakTime", "Streak Time", "How long (in ticks) do streaks last?", true, 100, 0, Integer.MAX_VALUE);
 		config.createOrUpdateIntProperty("basics", "Basics", "playersFollowYourFavouriteFlavour", "Player Flavour", "Do players follow your favourite flavour?", true, 0, 0, 1);
+		config.createOrUpdateIntProperty("basics", "Basics", "sprintTrail", "Sprint Trail", "Render a player's sprint trail?", true, 1, 0, 1);
 		config.createOrUpdateStringProperty("basics", "Basics", "favouriteFlavour", "Favourite Flavour", "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.", true, "");
 	}
 	
@@ -147,6 +149,8 @@ public class Streak
 				}
 			}
 		}
+		
+		hasMorphMod = Loader.isModLoaded("Morph");
 	}
 	
     public static void console(String s, boolean warning)

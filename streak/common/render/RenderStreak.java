@@ -2,12 +2,11 @@ package streak.common.render;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -17,6 +16,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import streak.common.Streak;
 import streak.common.core.LocationInfo;
 import streak.common.entity.EntityStreak;
@@ -24,19 +26,23 @@ import streak.common.entity.EntityStreak;
 public class RenderStreak extends Render 
 {
 	
+	public ModelBiped modelBiped;
+	
 	public RenderStreak()
 	{
 		shadowSize = 0.0F;
+		modelBiped = new ModelBiped(0.0F);
+		modelBiped.isChild = false;
 	}
 	
     public void renderStreak(EntityStreak hat, double par2, double par4, double par6, float par8, float par9)
     {
-    	if(!(hat.parent instanceof EntityPlayer) || Streak.flavours.isEmpty())
+    	if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty())
     	{
     		return;
     	}
     	
-		EntityPlayer player = (EntityPlayer)hat.parent;
+		AbstractClientPlayer player = (AbstractClientPlayer)hat.parent;
 		
 		if(player.isInvisible() || player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
 		{
@@ -61,18 +67,6 @@ public class RenderStreak extends Render
 			image = Streak.flavours.get(hat.flavour);
 		}
         
-        if (image != null)
-        {
-            if (Streak.flavourImageId.get(image) == -1)
-            {
-            	Streak.flavourImageId.put(image, TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), image));
-            }
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, Streak.flavourImageId.get(image));
-        }
-		
-		RenderHelper.disableStandardItemLighting();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -82,6 +76,8 @@ public class RenderStreak extends Render
 
         float startGrad = 5 - par9;
         float endGrad = 20 - par9;
+        
+//        Streak.config.getInt("sprintTrail");
         
         for(int i = loc.size() - 2; i >=0 ; i--)
         {
@@ -103,8 +99,16 @@ public class RenderStreak extends Render
 			while(i >= 0)
 			{
 				LocationInfo infoPoint = loc.get(i);
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && Streak.hasMorphMod && (morph.api.Api.hasMorph(player.username, true) && morph.api.Api.getMorphEntity(player.username, true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.username, true) >= 1.0F || !morph.api.Api.hasMorph(player.username, true)) || !Streak.hasMorphMod)
+				{
+					infoEnd = infoPoint;
+					start--;
+					i--;
+					break;
+				}
 				if(infoPoint.hasSameCoords(infoStart))
 				{
+					start--;
 					i--;
 					continue;
 				}
@@ -147,6 +151,23 @@ public class RenderStreak extends Render
 				
 				GL11.glTranslated(posX, posY, posZ);
 				
+				int ii = hat.getBrightnessForRender(par9);
+				int j = ii % 65536;
+				int k = ii / 65536;
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+				
+				RenderHelper.disableStandardItemLighting();
+				GL11.glDisable(GL11.GL_LIGHTING);
+				
+		        if (image != null)
+		        {
+		            if (Streak.flavourImageId.get(image) == -1)
+		            {
+		            	Streak.flavourImageId.put(image, TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), image));
+		            }
+		            GL11.glBindTexture(GL11.GL_TEXTURE_2D, Streak.flavourImageId.get(image));
+		        }
+				
 		        tessellator.startDrawingQuads();
 		        tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, startAlpha);
 		        tessellator.addVertexWithUV(0		, 0					, 0, infoStart.startU, 1.0D);
@@ -157,14 +178,19 @@ public class RenderStreak extends Render
 		        {
 		        	endTex--;
 		        }
-		        while(endTex < 0)
-		        {
-		        	endTex++;
-		        }
+//		        while(endTex < 0)
+//		        {
+//		        	endTex++;
+//		        }
 				double distX = infoStart.posX - infoEnd.posX;
 				double distZ = infoStart.posZ - infoEnd.posZ;
 				double scales = Math.sqrt(distX * distX + distZ * distZ) / infoStart.height;
 				boolean far = scales > 1D;
+				if(scales < 1)
+				{
+//					System.out.println(infoStart.startU);
+//					System.out.println(endTex);
+				}
 				while(scales > 1D)
 				{
 					endTex++;
@@ -173,6 +199,52 @@ public class RenderStreak extends Render
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY + infoEnd.height	, nextPosZ - posZ, endTex, 0.0D);
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY					, nextPosZ - posZ, endTex, 1.0D);
 		        tessellator.draw();
+		        
+		        GL11.glEnable(GL11.GL_LIGHTING);
+		        RenderHelper.enableStandardItemLighting();
+		        
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && Streak.hasMorphMod && (morph.api.Api.hasMorph(player.username, true) && morph.api.Api.getMorphEntity(player.username, true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.username, true) >= 1.0F || !morph.api.Api.hasMorph(player.username, true)) || !Streak.hasMorphMod)
+				{
+					ii = player.getBrightnessForRender(par9);
+					j = ii % 65536;
+					k = ii / 65536;
+					OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+					
+					GL11.glPushMatrix();
+					GL11.glRotatef(infoStart.renderYawOffset, 0.0F, -1.0F, 0.0F);
+					
+					float scalee = 0.9375F;
+					GL11.glScalef(scalee, -scalee, -scalee);
+					
+					GL11.glTranslatef(0.0F, -1.5F, 0.0F);
+					
+					float alpha = 1.0F - MathHelper.clamp_float(((float)(loc.size() - 2 - i) + par9) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
+					
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
+					
+					mc.getTextureManager().bindTexture(player.getLocationSkin());
+					float f2 = infoStart.renderYawOffset;
+					float f3 = infoStart.rotationYawHead;
+
+					float f7 = infoStart.limbSwingAmount;
+
+					float f8 = infoStart.limbSwing - infoStart.limbSwingAmount;
+
+					if (f7 > 1.0F)
+					{
+						f7 = 1.0F;
+					}
+
+					float f4 = (float)player.ticksExisted - (loc.size() - 2 - i); //TODO update this
+
+					float f5 = infoStart.rotationPitch;
+
+					modelBiped.render(player, f8, f7, f4, f3 - f2, f5, 0.0625F);
+					
+					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+					
+					GL11.glPopMatrix();
+				}
 		        
 		        GL11.glPopMatrix();
 			}
@@ -184,9 +256,6 @@ public class RenderStreak extends Render
         
         GL11.glEnable(GL11.GL_CULL_FACE);
         
-        GL11.glEnable(GL11.GL_LIGHTING);
-        RenderHelper.enableStandardItemLighting();
-		
 		GL11.glPopMatrix();
     }
 	

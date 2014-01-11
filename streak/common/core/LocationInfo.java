@@ -8,6 +8,15 @@ public class LocationInfo
 	public double posY;
 	public double posZ;
 	
+	public float renderYawOffset;
+	public float rotationYawHead;
+	public float rotationPitch;
+	
+	public float limbSwing;
+	public float limbSwingAmount;
+	
+	public boolean isSprinting;
+	
 	public long lastTick;
 	public float height;
 	
@@ -23,6 +32,15 @@ public class LocationInfo
 		posX = player.posX;
 		posY = player.boundingBox.minY;
 		posZ = player.posZ;
+		
+		renderYawOffset = player.renderYawOffset;
+		rotationYawHead = player.rotationYawHead;
+		rotationPitch = player.rotationPitch;
+		
+		limbSwing = player.limbSwing;
+		limbSwingAmount = player.limbSwingAmount;
+		
+		isSprinting = player.isSprinting();
 		
 		lastTick = player.worldObj.getWorldTime();
 		
