@@ -3,12 +3,12 @@
   "modid" : "Streak",
   "name" : "Streak",
   "version" : "${version}",
-  "url" : "http://www.ichun.us/",
+  "url" : "http://ichun.us/mods/streak/",
   "credits" : "",
   "authors": [
     "iChun"
   ],
-  "description": "Leaves a streak trail behind the player of various flavours. Flavours can be added or removed from the mods folder.",
+  "description": "Streak mod, a clientside trail-rendering effect for players.",
   "logoFile" : "",
   "updateUrl" : "",
   "parent" : "",
