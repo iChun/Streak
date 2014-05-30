@@ -1,0 +1,21 @@
+[
+{
+  "modid" : "Streak",
+  "name" : "Streak",
+  "version" : "${version}",
+  "url" : "http://www.ichun.us/",
+  "credits" : "",
+  "authors": [
+    "iChun"
+  ],
+  "description": "Leaves a streak trail behind the player of various flavours. Flavours can be added or removed from the mods folder.",
+  "logoFile" : "",
+  "updateUrl" : "",
+  "parent" : "",
+  "screenshots": [
+  ],
+  "dependancies": [
+    "Forge", "iChunUtil"
+  ]
+}
+]
