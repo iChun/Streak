@@ -99,7 +99,7 @@ public class RenderStreak extends Render
 			while(i >= 0)
 			{
 				LocationInfo infoPoint = loc.get(i);
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.username, true) && morph.api.Api.getMorphEntity(player.username, true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.username, true) >= 1.0F || !morph.api.Api.hasMorph(player.username, true)) || !Streak.hasMorphMod))
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getCommandSenderName(), true) && morph.api.Api.getMorphEntity(player.getCommandSenderName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getCommandSenderName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getCommandSenderName(), true)) || !Streak.hasMorphMod))
 				{
 					infoEnd = infoPoint;
 					start--;
@@ -203,7 +203,7 @@ public class RenderStreak extends Render
 		        GL11.glEnable(GL11.GL_LIGHTING);
 		        RenderHelper.enableStandardItemLighting();
 		        
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.username, true) && morph.api.Api.getMorphEntity(player.username, true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.username, true) >= 1.0F || !morph.api.Api.hasMorph(player.username, true)) || !Streak.hasMorphMod))
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getCommandSenderName(), true) && morph.api.Api.getMorphEntity(player.getCommandSenderName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getCommandSenderName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getCommandSenderName(), true)) || !Streak.hasMorphMod))
 				{
 					ii = player.getBrightnessForRender(par9);
 					j = ii % 65536;

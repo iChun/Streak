@@ -1,28 +1,5 @@
 package streak.common;
 
-import ichun.core.LoggerHelper;
-import ichun.core.ResourceHelper;
-import ichun.core.config.Config;
-import ichun.core.config.ConfigHandler;
-import ichun.core.config.IConfigUser;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.imageio.ImageIO;
-
-import net.minecraftforge.common.Property;
-import streak.common.core.TickHandlerClient;
-import streak.common.entity.EntityStreak;
-import streak.common.render.RenderStreak;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
@@ -31,21 +8,45 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ichun.common.core.util.ResourceHelper;
+import ichun.common.core.config.Config;
+import ichun.common.core.config.ConfigHandler;
+import ichun.common.core.config.IConfigUser;
+import ichun.common.iChunUtil;
+import net.minecraftforge.common.config.Property;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import streak.common.core.TickHandlerClient;
+import streak.common.entity.EntityStreak;
+import streak.common.render.RenderStreak;
 
-@Mod(modid = "Streak", name = "Streak", version = Streak.version, dependencies = "required-after:iChunUtil@[2.4.0,)")
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+@Mod(modid = "Streak", name = "Streak",
+        version = Streak.version,
+        dependencies = "required-after:iChunUtil@[" + iChunUtil.versionMC +".0.0,)"
+            )
 public class Streak 
 	implements IConfigUser
 {
 
-	public static final String version = "2.1.0";
+    public static final String version = iChunUtil.versionMC + ".0.0";
 
 	@Instance("Streak")
 	public static Streak instance;
 	
-	private static final Logger logger = LoggerHelper.createLogger("Streak");
+	private static final Logger logger = LogManager.getLogger("Streak");
 	
 	public static Config config;
 
@@ -70,10 +71,11 @@ public class Streak
 		}
 		
 		config = ConfigHandler.createConfig(event.getSuggestedConfigurationFile(), "streak", "Streak", logger, instance);
-		config.createOrUpdateIntProperty("basics", "Basics", "streakTime", "Streak Time", "How long (in ticks) do streaks last?", true, 100, 0, Integer.MAX_VALUE);
-		config.createOrUpdateIntProperty("basics", "Basics", "playersFollowYourFavouriteFlavour", "Player Flavour", "Do players follow your favourite flavour?", true, 0, 0, 1);
-		config.createOrUpdateIntProperty("basics", "Basics", "sprintTrail", "Sprint Trail", "Render a player's sprint trail?", true, 1, 0, 1);
-		config.createOrUpdateStringProperty("basics", "Basics", "favouriteFlavour", "Favourite Flavour", "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.", true, "");
+        config.setCurrentCategory("basics", "Basics", "Basic mod properties.");
+		config.createIntProperty("streakTime", "Streak Time", "How long (in ticks) do streaks last?", true, false, 100, 0, Integer.MAX_VALUE);
+		config.createIntProperty("playersFollowYourFavouriteFlavour", "Player Flavour", "Do players follow your favourite flavour?", true, false, 0, 0, 1);
+		config.createIntProperty("sprintTrail", "Sprint Trail", "Render a player's sprint trail?", true, false, 1, 0, 1);
+		config.createStringProperty("favouriteFlavour", "Favourite Flavour", "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.", true, false, "");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -83,8 +85,8 @@ public class Streak
 		RenderingRegistry.registerEntityRenderingHandler(EntityStreak.class, new RenderStreak());
 
 		tickHandlerClient = new TickHandlerClient();
-		TickRegistry.registerTickHandler(tickHandlerClient, Side.CLIENT);
-		
+        FMLCommonHandler.instance().bus().register(tickHandlerClient);
+
 		File streakDir = new File(ResourceHelper.getModsFolder(), "/Streak Flavours");
 		if(!streakDir.exists() && streakDir.mkdirs())
 		{
@@ -156,6 +158,6 @@ public class Streak
     public static void console(String s, boolean warning)
     {
     	StringBuilder sb = new StringBuilder();
-    	logger.log(warning ? Level.WARNING : Level.INFO, sb.append("[").append(version).append("] ").append(s).toString());
+    	logger.log(warning ? Level.WARN : Level.INFO, sb.append("[").append(version).append("] ").append(s).toString());
     }
 }
