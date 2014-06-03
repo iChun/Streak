@@ -2,6 +2,7 @@ package streak.common.core;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,9 +40,9 @@ public class TickHandlerClient
 	}
 
     @SubscribeEvent
-	public void worldTick(TickEvent.WorldTickEvent event)
+	public void worldTick(TickEvent.ClientTickEvent event)
 	{
-        if(event.phase == TickEvent.Phase.END)
+        if(event.phase == TickEvent.Phase.END && Minecraft.getMinecraft().theWorld != null)
         {
             WorldClient world = Minecraft.getMinecraft().theWorld;
             if(worldInstance != world)
@@ -67,7 +68,7 @@ public class TickHandlerClient
     @SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
 	{
-        if(event.phase == TickEvent.Phase.END)
+        if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.END)
         {
             EntityPlayer player = event.player;
             WorldClient world = Minecraft.getMinecraft().theWorld;

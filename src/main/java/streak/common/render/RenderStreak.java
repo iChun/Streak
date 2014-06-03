@@ -37,19 +37,19 @@ public class RenderStreak extends Render
 	
     public void renderStreak(EntityStreak hat, double par2, double par4, double par6, float par8, float par9)
     {
-    	if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty())
+        if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty())
     	{
     		return;
     	}
-    	
+
 		AbstractClientPlayer player = (AbstractClientPlayer)hat.parent;
 		
 		if(player.isInvisible() || player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
 		{
 			return;
 		}
-		
-		ArrayList<LocationInfo> loc = Streak.tickHandlerClient.getPlayerLocationInfo(player);
+
+        ArrayList<LocationInfo> loc = Streak.tickHandlerClient.getPlayerLocationInfo(player);
 		
 		GL11.glPushMatrix();
 		
@@ -134,7 +134,7 @@ public class RenderStreak extends Render
 			if(infoEnd != null)
 			{
 		        i += 2;
-				
+
 		        float endAlpha = i > loc.size() - 1 - startGrad ? (MathHelper.clamp_float(0.8F * (float)(loc.size() - 1 - i) / (float)startGrad, 0.0F, 0.8F)) : i < endGrad ? MathHelper.clamp_float(0.8F * (float)(i - 1) / endGrad, 0.0F, 0.8F) : 0.8F;
 		        
 				double posX = infoStart.posX - RenderManager.renderPosX;
@@ -167,7 +167,7 @@ public class RenderStreak extends Render
 		            }
 		            GL11.glBindTexture(GL11.GL_TEXTURE_2D, Streak.flavourImageId.get(image));
 		        }
-				
+
 		        tessellator.startDrawingQuads();
 		        tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, startAlpha);
 		        tessellator.addVertexWithUV(0		, 0					, 0, infoStart.startU, 1.0D);
@@ -199,7 +199,7 @@ public class RenderStreak extends Render
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY + infoEnd.height	, nextPosZ - posZ, endTex, 0.0D);
 		        tessellator.addVertexWithUV(nextPosX - posX	, nextPosY - posY					, nextPosZ - posZ, endTex, 1.0D);
 		        tessellator.draw();
-		        
+
 		        GL11.glEnable(GL11.GL_LIGHTING);
 		        RenderHelper.enableStandardItemLighting();
 		        
@@ -209,19 +209,19 @@ public class RenderStreak extends Render
 					j = ii % 65536;
 					k = ii / 65536;
 					OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
-					
+
 					GL11.glPushMatrix();
 					GL11.glRotatef(infoStart.renderYawOffset, 0.0F, -1.0F, 0.0F);
-					
+
 					float scalee = 0.9375F;
 					GL11.glScalef(scalee, -scalee, -scalee);
-					
+
 					GL11.glTranslatef(0.0F, -1.5F, 0.0F);
-					
+
 					float alpha = 1.0F - MathHelper.clamp_float(((float)(loc.size() - 2 - i) + par9) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
-					
+
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, alpha);
-					
+
 					mc.getTextureManager().bindTexture(player.getLocationSkin());
 					float f2 = infoStart.renderYawOffset;
 					float f3 = infoStart.rotationYawHead;
@@ -240,9 +240,9 @@ public class RenderStreak extends Render
 					float f5 = infoStart.rotationPitch;
 
 					modelBiped.render(player, f8, f7, f4, f3 - f2, f5, 0.0625F);
-					
+
 					GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-					
+
 					GL11.glPopMatrix();
 				}
 		        
