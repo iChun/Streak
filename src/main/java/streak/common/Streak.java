@@ -10,6 +10,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ichun.common.core.updateChecker.ModVersionChecker;
+import ichun.common.core.updateChecker.ModVersionInfo;
 import ichun.common.core.util.ResourceHelper;
 import ichun.common.core.config.Config;
 import ichun.common.core.config.ConfigHandler;
@@ -69,13 +71,15 @@ public class Streak
 			console("You're loading Streak on a server! This is a client-only mod!", true);
 			return;
 		}
-		
+
 		config = ConfigHandler.createConfig(event.getSuggestedConfigurationFile(), "streak", "Streak", logger, instance);
-        config.setCurrentCategory("basics", "Basics", "Basic mod properties.");
-		config.createIntProperty("streakTime", "Streak Time", "How long (in ticks) do streaks last?", true, false, 100, 0, Integer.MAX_VALUE);
-		config.createIntProperty("playersFollowYourFavouriteFlavour", "Player Flavour", "Do players follow your favourite flavour?", true, false, 0, 0, 1);
-		config.createIntProperty("sprintTrail", "Sprint Trail", "Render a player's sprint trail?", true, false, 1, 0, 1);
-		config.createStringProperty("favouriteFlavour", "Favourite Flavour", "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.", true, false, "");
+        config.setCurrentCategory("basics", "streak.config.cat.basics.name", "streak.config.cat.basics.comment");
+		config.createIntProperty("streakTime", "streak.config.prop.streakTime.name", "streak.config.prop.streakTime.comment", true, false, 100, 5, Integer.MAX_VALUE);
+		config.createIntProperty("playersFollowYourFavouriteFlavour", "streak.config.prop.playersFollowYourFavouriteFlavour.name", "streak.config.prop.playersFollowYourFavouriteFlavour.comment", true, false, 0, 0, 1);
+		config.createIntProperty("sprintTrail", "streak.config.prop.sprintTrail.name", "streak.config.prop.sprintTrail.comment", true, false, 1, 0, 1);
+		config.createStringProperty("favouriteFlavour", "streak.config.prop.favouriteFlavour.name", "streak.config.prop.favouriteFlavour.comment", true, false, "");
+
+        ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", "1.7", version, false));
 	}
 	
 	@SideOnly(Side.CLIENT)
