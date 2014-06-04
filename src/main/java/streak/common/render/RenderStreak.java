@@ -235,7 +235,7 @@ public class RenderStreak extends Render
 						f7 = 1.0F;
 					}
 
-					float f4 = (float)player.ticksExisted - (loc.size() - 2 - i); //TODO update this
+					float f4 = (float)player.ticksExisted - (loc.size() - 2 - i);
 
 					float f5 = infoStart.rotationPitch;
 
