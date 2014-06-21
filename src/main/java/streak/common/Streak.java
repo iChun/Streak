@@ -80,6 +80,8 @@ public class Streak
 		config.createStringProperty("favouriteFlavour", "streak.config.prop.favouriteFlavour.name", "streak.config.prop.favouriteFlavour.comment", true, false, "");
 
         ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", "1.7", version, false));
+
+        //TODO check out this: http://www.youtube.com/watch?v=F-S0AB49HbA Its gradients are smooth.
 	}
 	
 	@SideOnly(Side.CLIENT)
