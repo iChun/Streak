@@ -37,7 +37,7 @@ public class RenderStreak extends Render
 	
     public void renderStreak(EntityStreak hat, double par2, double par4, double par6, float par8, float par9)
     {
-        if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty())
+        if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty() || hat.parent.isInvisible())
     	{
     		return;
     	}

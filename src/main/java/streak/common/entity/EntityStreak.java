@@ -47,7 +47,7 @@ public class EntityStreak extends Entity
 	{
 		ticksExisted++;
 		
-		if(parent == null || !parent.isEntityAlive() || parent.isChild())
+		if(parent == null || !parent.isEntityAlive() || parent.isChild() || Streak.tickHandlerClient.streaks.get(parent.getCommandSenderName()) != this)
 		{
 			setDead();
 			return;

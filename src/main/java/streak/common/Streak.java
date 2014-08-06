@@ -79,7 +79,7 @@ public class Streak
 		config.createIntProperty("sprintTrail", "streak.config.prop.sprintTrail.name", "streak.config.prop.sprintTrail.comment", true, false, 1, 0, 1);
 		config.createStringProperty("favouriteFlavour", "streak.config.prop.favouriteFlavour.name", "streak.config.prop.favouriteFlavour.comment", true, false, "");
 
-        ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", "1.7", version, false));
+        ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", iChunUtil.versionOfMC, version, false));
 
         //TODO check out this: http://www.youtube.com/watch?v=F-S0AB49HbA Its gradients are smooth.
 	}

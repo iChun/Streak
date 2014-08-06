@@ -32,8 +32,15 @@ public class TickHandlerClient
                 if(e.getValue().parent != null)
                 {
                     EntityStreak streak = e.getValue();
-
-                    updatePos(streak, streak.parent);
+                    if(e.getValue().parent.isDead)
+                    {
+                        streak.setDead();
+                        iterator.remove();
+                    }
+                    else
+                    {
+                        updatePos(streak, streak.parent);
+                    }
                 }
             }
         }
@@ -71,6 +78,11 @@ public class TickHandlerClient
         if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.END)
         {
             EntityPlayer player = event.player;
+            if(player.worldObj.getPlayerEntityByName(player.getCommandSenderName()) != player)
+            {
+                return;
+            }
+
             WorldClient world = Minecraft.getMinecraft().theWorld;
 
             EntityStreak hat = streaks.get(player.getCommandSenderName());
