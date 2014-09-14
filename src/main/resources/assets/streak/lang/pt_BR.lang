@@ -1,0 +1,13 @@
+streak.config.cat.basics.name=Básicos
+
+streak.config.cat.basics.comment=Propriedades básicas do mod.
+
+streak.config.prop.streakTime.name=Tempo da Risca
+streak.config.prop.playersFollowYourFavouriteFlavour.name=Sabor do Jogador
+streak.config.prop.sprintTrail.name=Trilha de Corrida
+streak.config.prop.favouriteFlavour.name=Sabor Favorito
+
+streak.config.prop.streakTime.comment=Por quanto tempo (em ticks) as riscas duram?
+streak.config.prop.playersFollowYourFavouriteFlavour.comment=Jogadores seguem seu sabor favorito?
+streak.config.prop.sprintTrail.comment=Renderizar a trilha de corrida de um jogador?
+streak.config.prop.favouriteFlavour.comment=Qual é o seu sabor favorito?\nPonha o nome igual ao da config\nDeixe como um nome errado para uma risca aleatória por pessoa.
