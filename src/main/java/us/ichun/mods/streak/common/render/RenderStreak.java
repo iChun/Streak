@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import us.ichun.mods.ichunutil.common.iChunUtil;
 import us.ichun.mods.streak.common.Streak;
 import us.ichun.mods.streak.common.core.LocationInfo;
 import us.ichun.mods.streak.common.entity.EntityStreak;
@@ -93,7 +94,7 @@ public class RenderStreak extends Render
 			while(i >= 0)
 			{
 				LocationInfo infoPoint = loc.get(i);
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
 				{
 					infoEnd = infoPoint;
 					start--;
@@ -207,7 +208,7 @@ public class RenderStreak extends Render
 				}
 
 				//				if(Streak.config.getInt("sprintTrail") == 1 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
+				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
 				{
 					ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(texBind)).mainModel;
 					ii = player.getBrightnessForRender(par9);

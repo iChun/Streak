@@ -54,8 +54,6 @@ public class Streak
 
 	public static TickHandlerClient tickHandlerClient;
 	
-	public static boolean hasMorphMod;
-	
 	public static HashMap<String, Integer> flavourNames = new HashMap<String, Integer>();
 	public static HashMap<Integer, BufferedImage> flavours = new HashMap<Integer, BufferedImage>();
 	public static HashMap<BufferedImage, Integer> flavourImageId = new HashMap<BufferedImage, Integer>();
@@ -155,8 +153,6 @@ public class Streak
 				}
 			}
 		}
-		
-		hasMorphMod = Loader.isModLoaded("Morph");
 	}
 	
     public static void console(String s, boolean warning)
