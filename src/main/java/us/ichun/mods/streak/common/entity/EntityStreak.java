@@ -1,13 +1,12 @@
-package streak.common.entity;
+package us.ichun.mods.streak.common.entity;
 
-import streak.common.Streak;
+import us.ichun.mods.streak.common.Streak;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EntityStreak extends Entity 
@@ -34,7 +33,7 @@ public class EntityStreak extends Entity
 		super(par1World);
 		setSize(0.1F, 0.1F);
 		parent = ent;
-		setLocationAndAngles(parent.posX, parent.boundingBox.minY, parent.posZ, parent.rotationYaw, parent.rotationPitch);
+		setLocationAndAngles(parent.posX, parent.getEntityBoundingBox().minY, parent.posZ, parent.rotationYaw, parent.rotationPitch);
 		lastUpdate = par1World.getWorldTime();
 		ignoreFrustumCheck = true;
 		renderDistanceWeight = 10D;
@@ -47,7 +46,7 @@ public class EntityStreak extends Entity
 	{
 		ticksExisted++;
 		
-		if(parent == null || !parent.isEntityAlive() || parent.isChild() || Streak.tickHandlerClient.streaks.get(parent.getCommandSenderName()) != this)
+		if(parent == null || !parent.isEntityAlive() || parent.isChild() || Streak.tickHandlerClient.streaks.get(parent.getName()) != this)
 		{
 			setDead();
 			return;

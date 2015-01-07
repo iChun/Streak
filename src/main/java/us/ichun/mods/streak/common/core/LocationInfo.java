@@ -1,4 +1,4 @@
-package streak.common.core;
+package us.ichun.mods.streak.common.core;
 
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -30,7 +30,7 @@ public class LocationInfo
 	public void update(EntityPlayer player)
 	{
 		posX = player.posX;
-		posY = player.boundingBox.minY;
+		posY = player.getEntityBoundingBox().minY;
 		posZ = player.posZ;
 		
 		renderYawOffset = player.renderYawOffset;
@@ -44,7 +44,7 @@ public class LocationInfo
 		
 		lastTick = player.worldObj.getWorldTime();
 		
-		height = player.height - player.ySize;
+		height = player.height;
 	}
 
 	public boolean hasSameCoords(LocationInfo info) 

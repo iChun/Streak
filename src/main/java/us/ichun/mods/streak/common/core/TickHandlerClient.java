@@ -1,14 +1,14 @@
-package streak.common.core;
+package us.ichun.mods.streak.common.core;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import streak.common.Streak;
-import streak.common.entity.EntityStreak;
+import us.ichun.mods.streak.common.Streak;
+import us.ichun.mods.streak.common.entity.EntityStreak;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +63,7 @@ public class TickHandlerClient
             while(ite.hasNext())
             {
                 Entry<String, EntityStreak> e = ite.next();
-                if(e.getValue().worldObj.provider.dimensionId != world.provider.dimensionId || (world.getWorldTime() - e.getValue().lastUpdate) > 10L)
+                if(e.getValue().worldObj.provider.getDimensionId() != world.provider.getDimensionId() || (world.getWorldTime() - e.getValue().lastUpdate) > 10L)
                 {
                     e.getValue().setDead();
                     ite.remove();
@@ -78,17 +78,17 @@ public class TickHandlerClient
         if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.END)
         {
             EntityPlayer player = event.player;
-            if(player.worldObj.getPlayerEntityByName(player.getCommandSenderName()) != player)
+            if(player.worldObj.getPlayerEntityByName(player.getName()) != player)
             {
                 return;
             }
 
             WorldClient world = Minecraft.getMinecraft().theWorld;
 
-            EntityStreak hat = streaks.get(player.getCommandSenderName());
+            EntityStreak hat = streaks.get(player.getName());
             if(hat == null || hat.isDead)
             {
-                if(player.getCommandSenderName().equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getCommandSenderName()))
+                if(player.getName().equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getName()))
                 {
                     //Assume respawn
                     for(Entry<String, EntityStreak> e : streaks.entrySet())
@@ -98,7 +98,7 @@ public class TickHandlerClient
                 }
 
                 hat = new EntityStreak(world, player);
-                streaks.put(player.getCommandSenderName(), hat);
+                streaks.put(player.getName(), hat);
                 world.spawnEntityInWorld(hat);
             }
 
@@ -120,11 +120,11 @@ public class TickHandlerClient
 	
 	public ArrayList<LocationInfo> getPlayerLocationInfo(EntityPlayer player)
 	{
-		ArrayList<LocationInfo> loc = playerLoc.get(player.getCommandSenderName());//0 = oldest
+		ArrayList<LocationInfo> loc = playerLoc.get(player.getName());//0 = oldest
 		if(loc == null)
 		{
 			loc = new ArrayList<LocationInfo>();
-			playerLoc.put(player.getCommandSenderName(), loc);
+			playerLoc.put(player.getName(), loc);
 		}
 		int time = Streak.config.getInt("streakTime");
 		if(loc.size() < time)

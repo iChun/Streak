@@ -1,29 +1,29 @@
-package streak.common;
+package us.ichun.mods.streak.common;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ichun.common.core.updateChecker.ModVersionChecker;
-import ichun.common.core.updateChecker.ModVersionInfo;
-import ichun.common.core.util.ResourceHelper;
-import ichun.common.core.config.Config;
-import ichun.common.core.config.ConfigHandler;
-import ichun.common.core.config.IConfigUser;
-import ichun.common.iChunUtil;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import us.ichun.mods.ichunutil.common.core.updateChecker.ModVersionChecker;
+import us.ichun.mods.ichunutil.common.core.updateChecker.ModVersionInfo;
+import us.ichun.mods.ichunutil.common.core.util.ResourceHelper;
+import us.ichun.mods.ichunutil.common.core.config.Config;
+import us.ichun.mods.ichunutil.common.core.config.ConfigHandler;
+import us.ichun.mods.ichunutil.common.core.config.IConfigUser;
+import us.ichun.mods.ichunutil.common.iChunUtil;
 import net.minecraftforge.common.config.Property;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import streak.common.core.TickHandlerClient;
-import streak.common.entity.EntityStreak;
-import streak.common.render.RenderStreak;
+import us.ichun.mods.streak.common.core.TickHandlerClient;
+import us.ichun.mods.streak.common.entity.EntityStreak;
+import us.ichun.mods.streak.common.render.RenderStreak;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -73,15 +73,13 @@ public class Streak
 		}
 
 		config = ConfigHandler.createConfig(event.getSuggestedConfigurationFile(), "streak", "Streak", logger, instance);
-        config.setCurrentCategory("basics", "streak.config.cat.basics.name", "streak.config.cat.basics.comment");
-		config.createIntProperty("streakTime", "streak.config.prop.streakTime.name", "streak.config.prop.streakTime.comment", true, false, 100, 5, Integer.MAX_VALUE);
-		config.createIntProperty("playersFollowYourFavouriteFlavour", "streak.config.prop.playersFollowYourFavouriteFlavour.name", "streak.config.prop.playersFollowYourFavouriteFlavour.comment", true, false, 0, 0, 1);
-		config.createIntProperty("sprintTrail", "streak.config.prop.sprintTrail.name", "streak.config.prop.sprintTrail.comment", true, false, 1, 0, 1);
-		config.createStringProperty("favouriteFlavour", "streak.config.prop.favouriteFlavour.name", "streak.config.prop.favouriteFlavour.comment", true, false, "");
+        config.setCurrentCategory("basics");
+		config.createIntProperty("streakTime", true, false, 100, 5, Integer.MAX_VALUE);
+		config.createIntProperty("playersFollowYourFavouriteFlavour", true, false, 0, 0, 1);
+		config.createIntProperty("sprintTrail", true, false, 1, 0, 1);
+		config.createStringProperty("favouriteFlavour", true, false, "");
 
         ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", iChunUtil.versionOfMC, version, false));
-
-        //TODO check out this: http://www.youtube.com/watch?v=F-S0AB49HbA Its gradients are smooth.
 	}
 	
 	@SideOnly(Side.CLIENT)
