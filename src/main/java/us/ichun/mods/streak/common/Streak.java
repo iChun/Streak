@@ -79,7 +79,7 @@ public class Streak
 		config.createIntProperty("sprintTrail", true, false, 1, 0, 1);
 		config.createStringProperty("favouriteFlavour", true, false, "");
 
-        ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", iChunUtil.versionOfMC, version, false));
+        ModVersionChecker.register_iChunMod(new ModVersionInfo("Streak", iChunUtil.versionOfMC, version, false)); 
 	}
 	
 	@SideOnly(Side.CLIENT)
