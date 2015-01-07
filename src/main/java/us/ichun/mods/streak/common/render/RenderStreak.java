@@ -200,10 +200,16 @@ public class RenderStreak extends Render
 				GlStateManager.enableLighting();
 				RenderHelper.enableStandardItemLighting();
 
+				AbstractClientPlayer texBind = player;
+				if(morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof AbstractClientPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F)
+				{
+					texBind = (AbstractClientPlayer)morph.api.Api.getMorphEntity(player.getName(), true);
+				}
+
 				//				if(Streak.config.getInt("sprintTrail") == 1 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
 				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
 				{
-					ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(player)).mainModel;
+					ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(texBind)).mainModel;
 					ii = player.getBrightnessForRender(par9);
 					j = ii % 65536;
 					k = ii / 65536;
@@ -222,7 +228,7 @@ public class RenderStreak extends Render
 
 					GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
-					mc.getTextureManager().bindTexture(player.getLocationSkin());
+					mc.getTextureManager().bindTexture(texBind.getLocationSkin());
 					float f2 = infoStart.renderYawOffset;
 					float f3 = infoStart.rotationYawHead;
 
