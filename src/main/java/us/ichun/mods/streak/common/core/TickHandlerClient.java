@@ -1,12 +1,15 @@
 package us.ichun.mods.streak.common.core;
 
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import us.ichun.mods.ichunutil.common.iChunUtil;
+import us.ichun.mods.ichunutil.common.tracker.EntityInfo;
+import us.ichun.mods.ichunutil.common.tracker.IAdditionalTrackerInfo;
 import us.ichun.mods.streak.common.Streak;
 import us.ichun.mods.streak.common.entity.EntityStreak;
 
@@ -18,8 +21,8 @@ import java.util.Map.Entry;
 public class TickHandlerClient
 {
     @SubscribeEvent
-	public void renderTick(TickEvent.RenderTickEvent event)
-	{
+    public void renderTick(TickEvent.RenderTickEvent event)
+    {
         if(event.phase == TickEvent.Phase.START)
         {
             this.renderTick = event.renderTickTime;
@@ -44,11 +47,11 @@ public class TickHandlerClient
                 }
             }
         }
-	}
+    }
 
     @SubscribeEvent
-	public void worldTick(TickEvent.ClientTickEvent event)
-	{
+    public void worldTick(TickEvent.ClientTickEvent event)
+    {
         if(event.phase == TickEvent.Phase.END && Minecraft.getMinecraft().theWorld != null)
         {
             WorldClient world = Minecraft.getMinecraft().theWorld;
@@ -70,11 +73,11 @@ public class TickHandlerClient
                 }
             }
         }
-	}
+    }
 
     @SubscribeEvent
-	public void playerTick(TickEvent.PlayerTickEvent event)
-	{
+    public void playerTick(TickEvent.PlayerTickEvent event)
+    {
         if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.END)
         {
             EntityPlayer player = event.player;
@@ -102,65 +105,47 @@ public class TickHandlerClient
                 world.spawnEntityInWorld(hat);
             }
 
-            ArrayList<LocationInfo> loc = getPlayerLocationInfo(player);
-            LocationInfo oldest = loc.get(0);
-            loc.remove(0);
-            loc.add(oldest);
-            oldest.update(player);
-            LocationInfo newest = loc.get(loc.size() - 2);
-            double distX = newest.posX - oldest.posX;
-            double distZ = newest.posZ - oldest.posZ;
-            oldest.startU = newest.startU + (Math.sqrt(distX * distX + distZ * distZ) / newest.height);
-            while(oldest.startU > 1.0D)
+            ArrayList<EntityInfo> loc = iChunUtil.proxy.tickHandlerClient.getOrRegisterEntityTracker(player, Streak.config.streakTime, TextureTracker.class, true);
+            if(loc.size() > 1)
             {
-                oldest.startU--;
+                EntityInfo newest = loc.get(1);
+                EntityInfo newer = loc.get(0);
+
+                double distX = newest.posX - newer.posX;
+                double distZ = newest.posZ - newer.posZ;
+
+                IAdditionalTrackerInfo tracker1 = newest.getTracker(TextureTracker.class);
+                IAdditionalTrackerInfo tracker2 = newer.getTracker(TextureTracker.class);
+                if(tracker1 != null && tracker2 != null)
+                {
+                    ((TextureTracker)tracker2).startU = ((TextureTracker)tracker1).startU + (Math.sqrt(distX * distX + distZ * distZ) / newest.height);
+                    while(((TextureTracker)tracker2).startU > 1.0D)
+                    {
+                        ((TextureTracker)tracker2).startU--;
+                    }
+                }
             }
         }
-	}
-	
-	public ArrayList<LocationInfo> getPlayerLocationInfo(EntityPlayer player)
-	{
-		ArrayList<LocationInfo> loc = playerLoc.get(player.getName());//0 = oldest
-		if(loc == null)
-		{
-			loc = new ArrayList<LocationInfo>();
-			playerLoc.put(player.getName(), loc);
-		}
-		int time = Streak.config.getInt("streakTime");
-		if(loc.size() < time)
-		{
-			for(int i = 0; i < (time - loc.size()); i++)
-			{
-				loc.add(0, new LocationInfo(player));
-			}
-		}
-		else if(loc.size() > time)
-		{
-			loc.remove(0);
-		}
-		return loc;
-	}
-	
-	public void updatePos(EntityStreak streak, EntityLivingBase parent)
-	{
-		streak.lastTickPosX = streak.parent.lastTickPosX;
-		streak.lastTickPosY = streak.parent.lastTickPosY;
-		streak.lastTickPosZ = streak.parent.lastTickPosZ;
-		
-		streak.prevPosX = streak.parent.prevPosX;
-		streak.prevPosY = streak.parent.prevPosY;
-		streak.prevPosZ = streak.parent.prevPosZ;
-		
-		streak.posX = streak.parent.posX;
-		streak.posY = streak.parent.posY;
-		streak.posZ = streak.parent.posZ;
-	}
-	
-	public float renderTick;
-	
-	public WorldClient worldInstance;
-	
-	public HashMap<String, ArrayList<LocationInfo>> playerLoc = new HashMap<String, ArrayList<LocationInfo>>();
-	
-	public HashMap<String, EntityStreak> streaks = new HashMap<String, EntityStreak>();
+    }
+
+    public void updatePos(EntityStreak streak, EntityLivingBase parent)
+    {
+        streak.lastTickPosX = streak.parent.lastTickPosX;
+        streak.lastTickPosY = streak.parent.lastTickPosY;
+        streak.lastTickPosZ = streak.parent.lastTickPosZ;
+
+        streak.prevPosX = streak.parent.prevPosX;
+        streak.prevPosY = streak.parent.prevPosY;
+        streak.prevPosZ = streak.parent.prevPosZ;
+
+        streak.posX = streak.parent.posX;
+        streak.posY = streak.parent.posY;
+        streak.posZ = streak.parent.posZ;
+    }
+
+    public float renderTick;
+
+    public WorldClient worldInstance;
+
+    public HashMap<String, EntityStreak> streaks = new HashMap<String, EntityStreak>();
 }

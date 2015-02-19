@@ -15,8 +15,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import us.ichun.mods.ichunutil.common.iChunUtil;
+import us.ichun.mods.ichunutil.common.tracker.EntityInfo;
 import us.ichun.mods.streak.common.Streak;
-import us.ichun.mods.streak.common.core.LocationInfo;
+import us.ichun.mods.streak.common.core.TextureTracker;
 import us.ichun.mods.streak.common.entity.EntityStreak;
 
 import java.awt.image.BufferedImage;
@@ -24,258 +25,268 @@ import java.util.ArrayList;
 
 public class RenderStreak extends Render
 {
-	public RenderStreak()
-	{
-		super(Minecraft.getMinecraft().getRenderManager());
-		shadowSize = 0.0F;
-	}
+    public RenderStreak()
+    {
+        super(Minecraft.getMinecraft().getRenderManager());
+        shadowSize = 0.0F;
+    }
 
-	public void renderStreak(EntityStreak hat, double par2, double par4, double par6, float par8, float par9)
-	{
-		if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty() || hat.parent.isInvisible())
-		{
-			return;
-		}
+    public void renderStreak(EntityStreak hat, double par2, double par4, double par6, float par8, float par9)
+    {
+        if(!(hat.parent instanceof AbstractClientPlayer) || Streak.flavours.isEmpty() || hat.parent.isInvisible())
+        {
+            return;
+        }
 
-		AbstractClientPlayer player = (AbstractClientPlayer)hat.parent;
+        AbstractClientPlayer player = (AbstractClientPlayer)hat.parent;
 
-		if(player.isInvisible() || player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
-		{
-			return;
-		}
+        if(player.isInvisible() || player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
+        {
+            return;
+        }
 
-		ArrayList<LocationInfo> loc = Streak.tickHandlerClient.getPlayerLocationInfo(player);
+        ArrayList<EntityInfo> loc = new ArrayList<EntityInfo>();
 
-		GlStateManager.pushMatrix();
+        ArrayList<EntityInfo> set = iChunUtil.proxy.tickHandlerClient.getOrRegisterEntityTracker(player, Streak.config.streakTime, TextureTracker.class, true);
 
-		Minecraft mc = Minecraft.getMinecraft();
+        //new system, 0 = newest, size() = oldest;
+        //old system, 0 = oldest, size() = newest;
+        for(int i = Math.min(set.size(), Streak.config.streakTime) - 1; i >= 0; i--)
+        {
+            loc.add(set.get(i));
+        }
 
-		BufferedImage image;
+        GlStateManager.pushMatrix();
 
-		Integer flavour = Streak.flavourNames.get(Streak.config.getString("favouriteFlavour").toLowerCase());
-		if(flavour != null && (Streak.config.getInt("playersFollowYourFavouriteFlavour") == 1 && player != Minecraft.getMinecraft().thePlayer || player == Minecraft.getMinecraft().thePlayer))
-		{
-			image = Streak.flavours.get(flavour);
-		}
-		else
-		{
-			image = Streak.flavours.get(hat.flavour);
-		}
+        Minecraft mc = Minecraft.getMinecraft();
 
-		GlStateManager.disableCull();
+        BufferedImage image;
 
-		GlStateManager.disableAlpha();
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        Integer flavour = Streak.flavourNames.get(Streak.config.favouriteFlavour.toLowerCase());
+        if(flavour != null && (Streak.config.playersFollowYourFavouriteFlavour == 1 && player != Minecraft.getMinecraft().thePlayer || player == Minecraft.getMinecraft().thePlayer))
+        {
+            image = Streak.flavours.get(flavour);
+        }
+        else
+        {
+            image = Streak.flavours.get(hat.flavour);
+        }
 
-		float startGrad = 5 - par9;
-		float endGrad = 20 - par9;
+        GlStateManager.disableCull();
 
-		//        Streak.config.getInt("sprintTrail");
+        GlStateManager.disableAlpha();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
-		for(int i = loc.size() - 2; i >=0 ; i--)
-		{
-			int start = i;
-			LocationInfo infoStart = loc.get(i);
+        float startGrad = 5 - par9;
+        float endGrad = 20 - par9;
 
-			float startAlpha = i > loc.size() - 2 - startGrad ? (MathHelper.clamp_float(0.8F * (float)(loc.size() - 2 - i) / (float)startGrad, 0.0F, 0.8F)) : i < endGrad ? MathHelper.clamp_float(0.8F * (float)i / endGrad, 0.0F, 0.8F) : 0.8F;
+        for(int i = loc.size() - 2; i >=0 ; i--)
+        {
+            int start = i;
+            EntityInfo infoStart = loc.get(i);
 
-			if(player.worldObj.getWorldTime() - infoStart.lastTick > Streak.config.getInt("streakTime") + 20)
-			{
-				break;
-			}
+            float startAlpha = i > loc.size() - 2 - startGrad ? (MathHelper.clamp_float(0.8F * (float)(loc.size() - 2 - i) / (float)startGrad, 0.0F, 0.8F)) : i < endGrad ? MathHelper.clamp_float(0.8F * (float)i / endGrad, 0.0F, 0.8F) : 0.8F;
 
-			LocationInfo infoEnd = null;
+            if(player.worldObj.getWorldTime() - infoStart.lastTick > Streak.config.streakTime + 20)
+            {
+                break;
+            }
 
-			double grad = 500D;
+            EntityInfo infoEnd = null;
 
-			i--;
-			while(i >= 0)
-			{
-				LocationInfo infoPoint = loc.get(i);
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
-				{
-					infoEnd = infoPoint;
-					start--;
-					i--;
-					break;
-				}
-				if(infoPoint.hasSameCoords(infoStart))
-				{
-					start--;
-					i--;
-					continue;
-				}
-				double grad1 = infoPoint.posZ - infoStart.posZ / (infoPoint.posX - infoStart.posX);
-				if(grad == grad1 && infoPoint.posY == infoStart.posY)
-				{
-					infoEnd = infoPoint;
-					start--;
-					i--;
-					continue;
-				}
-				if(grad == 500D)
-				{
-					grad = grad1;
-				}
-				else
-				{
-					break;
-				}
-				infoEnd = infoPoint;
-				i--;
-			}
-			if(infoEnd != null)
-			{
-				i += 2;
+            double grad = 500D;
 
-				float endAlpha = i > loc.size() - 1 - startGrad ? (MathHelper.clamp_float(0.8F * (float)(loc.size() - 1 - i) / (float)startGrad, 0.0F, 0.8F)) : i < endGrad ? MathHelper.clamp_float(0.8F * (float)(i - 1) / endGrad, 0.0F, 0.8F) : 0.8F;
+            i--;
+            while(i >= 0)
+            {
+                EntityInfo infoPoint = loc.get(i);
+                if(Streak.config.sprintTrail == 1 && infoStart.sprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
+                {
+                    infoEnd = infoPoint;
+                    start--;
+                    i--;
+                    break;
+                }
+                if(infoPoint.hasSameCoords(infoStart))
+                {
+                    start--;
+                    i--;
+                    continue;
+                }
+                double grad1 = infoPoint.posZ - infoStart.posZ / (infoPoint.posX - infoStart.posX);
+                if(grad == grad1 && infoPoint.posY == infoStart.posY)
+                {
+                    infoEnd = infoPoint;
+                    start--;
+                    i--;
+                    continue;
+                }
+                if(grad == 500D)
+                {
+                    grad = grad1;
+                }
+                else
+                {
+                    break;
+                }
+                infoEnd = infoPoint;
+                i--;
+            }
+            if(infoEnd != null)
+            {
+                i += 2;
 
-				RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+                float endAlpha = i > loc.size() - 1 - startGrad ? (MathHelper.clamp_float(0.8F * (float)(loc.size() - 1 - i) / (float)startGrad, 0.0F, 0.8F)) : i < endGrad ? MathHelper.clamp_float(0.8F * (float)(i - 1) / endGrad, 0.0F, 0.8F) : 0.8F;
 
-				double posX = infoStart.posX - renderManager.renderPosX;
-				double posY = infoStart.posY - renderManager.renderPosY;
-				double posZ = infoStart.posZ - renderManager.renderPosZ;
+                RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
 
-				double nextPosX = infoEnd.posX - renderManager.renderPosX;
-				double nextPosY = infoEnd.posY - renderManager.renderPosY;
-				double nextPosZ = infoEnd.posZ - renderManager.renderPosZ;
+                double posX = infoStart.posX - renderManager.renderPosX;
+                double posY = infoStart.posY - renderManager.renderPosY;
+                double posZ = infoStart.posZ - renderManager.renderPosZ;
 
-				Tessellator tessellator = Tessellator.getInstance();
-				WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                double nextPosX = infoEnd.posX - renderManager.renderPosX;
+                double nextPosY = infoEnd.posY - renderManager.renderPosY;
+                double nextPosZ = infoEnd.posZ - renderManager.renderPosZ;
 
-				GlStateManager.pushMatrix();
+                Tessellator tessellator = Tessellator.getInstance();
+                WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
-				GlStateManager.translate(posX, posY, posZ);
+                GlStateManager.pushMatrix();
 
-				int ii = hat.getBrightnessForRender(par9);
-				int j = ii % 65536;
-				int k = ii / 65536;
-				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+                GlStateManager.translate(posX, posY, posZ);
 
-				RenderHelper.disableStandardItemLighting();
-				GlStateManager.disableLighting();
+                int ii = hat.getBrightnessForRender(par9);
+                int j = ii % 65536;
+                int k = ii / 65536;
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
 
-				if (image != null)
-				{
-					if (Streak.flavourImageId.get(image) == -1)
-					{
-						Streak.flavourImageId.put(image, TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), image));
-					}
-					GlStateManager.bindTexture(Streak.flavourImageId.get(image));
-				}
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.disableLighting();
 
-				worldRenderer.startDrawingQuads();
-				worldRenderer.setColorRGBA_F(1.0F, 1.0F, 1.0F, startAlpha);
-				worldRenderer.addVertexWithUV(0		, 0					, 0, infoStart.startU, 1.0D);
-				worldRenderer.addVertexWithUV(0		, 0 + infoStart.height	, 0, infoStart.startU, 0.0D);
-				worldRenderer.setColorRGBA_F(1.0F, 1.0F, 1.0F, endAlpha);
-				double endTex = infoEnd.startU - start + i;
-				if(endTex > infoStart.startU)
-				{
-					endTex--;
-				}
-				//		        while(endTex < 0)
-				//		        {
-				//		        	endTex++;
-				//		        }
-				double distX = infoStart.posX - infoEnd.posX;
-				double distZ = infoStart.posZ - infoEnd.posZ;
-				double scales = Math.sqrt(distX * distX + distZ * distZ) / infoStart.height;
-				boolean far = scales > 1D;
-				if(scales < 1)
-				{
-					//					System.out.println(infoStart.startU);
-					//					System.out.println(endTex);
-				}
-				while(scales > 1D)
-				{
-					endTex++;
-					scales--;
-				}
-				worldRenderer.addVertexWithUV(nextPosX - posX	, nextPosY - posY + infoEnd.height	, nextPosZ - posZ, endTex, 0.0D);
-				worldRenderer.addVertexWithUV(nextPosX - posX	, nextPosY - posY					, nextPosZ - posZ, endTex, 1.0D);
-				tessellator.draw();
+                if (image != null)
+                {
+                    if (Streak.flavourImageId.get(image) == -1)
+                    {
+                        Streak.flavourImageId.put(image, TextureUtil.uploadTextureImage(TextureUtil.glGenTextures(), image));
+                    }
+                    GlStateManager.bindTexture(Streak.flavourImageId.get(image));
+                }
 
-				GlStateManager.enableLighting();
-				RenderHelper.enableStandardItemLighting();
+                TextureTracker texStart = ((TextureTracker)infoStart.getTracker(TextureTracker.class));
+                TextureTracker texEnd = ((TextureTracker)infoEnd.getTracker(TextureTracker.class));
 
-				AbstractClientPlayer texBind = player;
-				if(morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof AbstractClientPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F)
-				{
-					texBind = (AbstractClientPlayer)morph.api.Api.getMorphEntity(player.getName(), true);
-				}
+                worldRenderer.startDrawingQuads();
+                worldRenderer.setColorRGBA_F(1.0F, 1.0F, 1.0F, startAlpha);
+                worldRenderer.addVertexWithUV(0		, 0					, 0, texStart.startU, 1.0D);
+                worldRenderer.addVertexWithUV(0		, 0 + infoStart.height	, 0, texStart.startU, 0.0D);
+                worldRenderer.setColorRGBA_F(1.0F, 1.0F, 1.0F, endAlpha);
+                double endTex = texEnd.startU - start + i;
+                if(endTex > texStart.startU)
+                {
+                    endTex--;
+                }
+                //		        while(endTex < 0)
+                //		        {
+                //		        	endTex++;
+                //		        }
+                double distX = infoStart.posX - infoEnd.posX;
+                double distZ = infoStart.posZ - infoEnd.posZ;
+                double scales = Math.sqrt(distX * distX + distZ * distZ) / infoStart.height;
+                boolean far = scales > 1D;
+                if(scales < 1)
+                {
+                    //					System.out.println(infoStart.startU);
+                    //					System.out.println(endTex);
+                }
+                while(scales > 1D)
+                {
+                    endTex++;
+                    scales--;
+                }
+                worldRenderer.addVertexWithUV(nextPosX - posX	, nextPosY - posY + infoEnd.height	, nextPosZ - posZ, endTex, 0.0D);
+                worldRenderer.addVertexWithUV(nextPosX - posX	, nextPosY - posY					, nextPosZ - posZ, endTex, 1.0D);
+                tessellator.draw();
 
-				//				if(Streak.config.getInt("sprintTrail") == 1 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
-				if(Streak.config.getInt("sprintTrail") == 1 && infoStart.isSprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
-				{
-					ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(texBind)).mainModel;
-					ii = player.getBrightnessForRender(par9);
-					j = ii % 65536;
-					k = ii / 65536;
-					OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+                GlStateManager.enableLighting();
+                RenderHelper.enableStandardItemLighting();
 
-					GlStateManager.pushMatrix();
-					GlStateManager.rotate(infoStart.renderYawOffset, 0.0F, -1.0F, 0.0F);
+                AbstractClientPlayer texBind = player;
+                if(morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof AbstractClientPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F)
+                {
+                    texBind = (AbstractClientPlayer)morph.api.Api.getMorphEntity(player.getName(), true);
+                }
 
-					float scalee = 0.9375F;
-					GlStateManager.scale(scalee, -scalee, -scalee);
+                //				if(Streak.config.getInt("sprintTrail") == 1 && (Streak.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !Streak.hasMorphMod))
+                if(Streak.config.sprintTrail == 1 && infoStart.sprinting && (loc.size() - 2 - i) < 6 && (iChunUtil.hasMorphMod && (morph.api.Api.hasMorph(player.getName(), true) && morph.api.Api.getMorphEntity(player.getName(), true) instanceof EntityPlayer && morph.api.Api.morphProgress(player.getName(), true) >= 1.0F || !morph.api.Api.hasMorph(player.getName(), true)) || !iChunUtil.hasMorphMod))
+                {
+                    ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(texBind)).mainModel;
+                    ii = player.getBrightnessForRender(par9);
+                    j = ii % 65536;
+                    k = ii / 65536;
+                    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
 
-					GlStateManager.translate(0.0F, -1.5F, 0.0F);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.rotate(infoStart.renderYawOffset, 0.0F, -1.0F, 0.0F);
 
-					float alpha = 1.0F - MathHelper.clamp_float(((float)(loc.size() - 2 - i) + par9) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
-					//					float alpha = 1.0F;
+                    float scalee = 0.9375F;
+                    GlStateManager.scale(scalee, -scalee, -scalee);
 
-					GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
+                    GlStateManager.translate(0.0F, -1.5F, 0.0F);
 
-					mc.getTextureManager().bindTexture(texBind.getLocationSkin());
-					float f2 = infoStart.renderYawOffset;
-					float f3 = infoStart.rotationYawHead;
+                    float alpha = 1.0F - MathHelper.clamp_float(((float)(loc.size() - 2 - i) + par9) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
+                    //					float alpha = 1.0F;
 
-					float f7 = infoStart.limbSwingAmount;
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
-					float f8 = infoStart.limbSwing - infoStart.limbSwingAmount;
+                    mc.getTextureManager().bindTexture(texBind.getLocationSkin());
+                    float f2 = infoStart.renderYawOffset;
+                    float f3 = infoStart.rotationYawHead;
 
-					if (f7 > 1.0F)
-					{
-						f7 = 1.0F;
-					}
+                    float f7 = infoStart.limbSwingAmount;
 
-					float f4 = (float)player.ticksExisted - (loc.size() - 2 - i);
+                    float f8 = infoStart.limbSwing - infoStart.limbSwingAmount;
 
-					float f5 = infoStart.rotationPitch;
+                    if (f7 > 1.0F)
+                    {
+                        f7 = 1.0F;
+                    }
 
-					biped.render(player, f8, f7, f4, f3 - f2, f5, 0.0625F);
+                    float f4 = (float)player.ticksExisted - (loc.size() - 2 - i);
 
-					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    float f5 = infoStart.rotationPitch;
 
-					GlStateManager.popMatrix();
-				}
+                    biped.render(player, f8, f7, f4, f3 - f2, f5, 0.0625F);
 
-				GlStateManager.popMatrix();
-			}
-		}
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		GlStateManager.shadeModel(GL11.GL_FLAT);
-		GlStateManager.disableBlend();
-		GlStateManager.enableAlpha();
+                    GlStateManager.popMatrix();
+                }
 
-		GlStateManager.enableCull();
+                GlStateManager.popMatrix();
+            }
+        }
 
-		GlStateManager.popMatrix();
-	}
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
 
-	@Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-	{
-		this.renderStreak((EntityStreak)par1Entity, par2, par4, par6, par8, par9);
-	}
+        GlStateManager.enableCull();
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity)
-	{
-		return DefaultPlayerSkin.getDefaultSkinLegacy();
-	}
+        GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        this.renderStreak((EntityStreak)par1Entity, par2, par4, par6, par8, par9);
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity)
+    {
+        return DefaultPlayerSkin.getDefaultSkinLegacy();
+    }
 
 }
