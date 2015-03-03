@@ -213,7 +213,7 @@ public class RenderStreak extends Render
                 RenderHelper.enableStandardItemLighting();
 
                 AbstractClientPlayer texBind = player;
-                if(morph.api.Api.hasMorph(player.getCommandSenderName(), true) && morph.api.Api.getMorphEntity(player.getCommandSenderName(), true) instanceof AbstractClientPlayer && morph.api.Api.morphProgress(player.getCommandSenderName(), true) >= 1.0F)
+                if(iChunUtil.hasMorphMod && morph.api.Api.hasMorph(player.getCommandSenderName(), true) && morph.api.Api.getMorphEntity(player.getCommandSenderName(), true) instanceof AbstractClientPlayer && morph.api.Api.morphProgress(player.getCommandSenderName(), true) >= 1.0F)
                 {
                     texBind = (AbstractClientPlayer)morph.api.Api.getMorphEntity(player.getCommandSenderName(), true);
                 }

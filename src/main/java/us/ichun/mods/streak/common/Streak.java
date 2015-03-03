@@ -40,7 +40,7 @@ import java.util.zip.ZipInputStream;
 public class Streak
 {
 
-    public static final String version = iChunUtil.versionMC + ".0.0";
+    public static final String version = iChunUtil.versionMC + ".0.1";
 
     @Instance("Streak")
     public static Streak instance;
