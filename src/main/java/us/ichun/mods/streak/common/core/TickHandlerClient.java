@@ -81,17 +81,17 @@ public class TickHandlerClient
         if(event.side == Side.CLIENT && event.phase == TickEvent.Phase.END)
         {
             EntityPlayer player = event.player;
-            if(player.worldObj.getPlayerEntityByName(player.getName()) != player)
+            if(player.worldObj.getPlayerEntityByName(player.getCommandSenderName()) != player)
             {
                 return;
             }
 
             WorldClient world = Minecraft.getMinecraft().theWorld;
 
-            EntityStreak hat = streaks.get(player.getName());
+            EntityStreak hat = streaks.get(player.getCommandSenderName());
             if(hat == null || hat.isDead)
             {
-                if(player.getName().equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getName()))
+                if(player.getCommandSenderName().equalsIgnoreCase(Minecraft.getMinecraft().thePlayer.getCommandSenderName()))
                 {
                     //Assume respawn
                     for(Entry<String, EntityStreak> e : streaks.entrySet())
@@ -101,7 +101,7 @@ public class TickHandlerClient
                 }
 
                 hat = new EntityStreak(world, player);
-                streaks.put(player.getName(), hat);
+                streaks.put(player.getCommandSenderName(), hat);
                 world.spawnEntityInWorld(hat);
             }
 

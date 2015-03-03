@@ -34,7 +34,8 @@ import java.util.zip.ZipInputStream;
 
 @Mod(modid = "Streak", name = "Streak",
         version = Streak.version,
-        dependencies = "required-after:iChunUtil@[" + iChunUtil.versionMC +".0.0,)"
+        dependencies = "required-after:iChunUtil@[" + iChunUtil.versionMC +".0.0,)",
+        clientSideOnly = true
 )
 public class Streak
 {
