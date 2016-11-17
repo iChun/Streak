@@ -1,9 +1,9 @@
-package us.ichun.mods.streak.common.core;
+package me.ichun.mods.streak.common.core;
 
-import us.ichun.mods.ichunutil.common.core.config.ConfigBase;
-import us.ichun.mods.ichunutil.common.core.config.annotations.ConfigProp;
-import us.ichun.mods.ichunutil.common.core.config.annotations.IntBool;
-import us.ichun.mods.ichunutil.common.core.config.annotations.IntMinMax;
+import me.ichun.mods.ichunutil.common.core.config.ConfigBase;
+import me.ichun.mods.ichunutil.common.core.config.annotations.ConfigProp;
+import me.ichun.mods.ichunutil.common.core.config.annotations.IntBool;
+import me.ichun.mods.ichunutil.common.core.config.annotations.IntMinMax;
 
 import java.io.File;
 
@@ -24,9 +24,9 @@ public class Config extends ConfigBase
     @ConfigProp(category = "basics")
     public String favouriteFlavour = "";
 
-    public Config(File file, String... unhide)
+    public Config(File file)
     {
-        super(file, unhide);
+        super(file);
     }
 
     @Override
