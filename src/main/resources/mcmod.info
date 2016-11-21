@@ -1,11 +1,11 @@
 [
 {
-  "modid" : "Streak",
+  "modid" : "streak",
   "name" : "Streak",
   "version" : "${version}",
   "url" : "http://ichun.us/mods/streak/",
   "credits" : "",
-  "authors": [
+  "authorList": [
     "iChun"
   ],
   "description": "Streak mod, a clientside trail-rendering effect for players.",
@@ -14,7 +14,7 @@
   "parent" : "",
   "screenshots": [
   ],
-  "dependancies": [
+  "dependencies": [
     "Forge", "iChunUtil"
   ]
 }
