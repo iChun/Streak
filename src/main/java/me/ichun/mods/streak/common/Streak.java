@@ -29,10 +29,9 @@ import java.util.zip.ZipInputStream;
 @Mod(modid = Streak.MOD_ID, name = Streak.MOD_NAME,
         version = Streak.VERSION,
         guiFactory = "me.ichun.mods.ichunutil.common.core.config.GenericModGuiFactory",
-        dependencies = "required-after:ichunutil@[" + iChunUtil.VERSION_MAJOR +".0.0,)",
+        dependencies = "required-after:ichunutil@[" + iChunUtil.VERSION_MAJOR +".0.0," + (iChunUtil.VERSION_MAJOR + 1) + ".0.0)",
         clientSideOnly = true,
-        acceptableRemoteVersions = "*",
-        acceptedMinecraftVersions = "[1.9.4,1.10.2]"
+        acceptableRemoteVersions = "*"
 )
 public class Streak
 {
