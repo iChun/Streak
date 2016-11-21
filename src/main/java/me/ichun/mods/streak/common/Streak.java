@@ -56,7 +56,7 @@ public class Streak
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        config = (Config)ConfigHandler.registerConfig(new Config(event.getSuggestedConfigurationFile()));
+        config = ConfigHandler.registerConfig(new Config(event.getSuggestedConfigurationFile()));
 
         UpdateChecker.registerMod(new UpdateChecker.ModVersionInfo(MOD_NAME, iChunUtil.VERSION_OF_MC, VERSION, false));
     }
