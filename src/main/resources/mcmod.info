@@ -3,7 +3,7 @@
   "modid" : "streak",
   "name" : "Streak",
   "version" : "${version}",
-  "url" : "http://ichun.us/mods/streak/",
+  "url" : "http://ichun.me/mods/streak/",
   "credits" : "",
   "authorList": [
     "iChun"
