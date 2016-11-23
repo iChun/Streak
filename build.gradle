@@ -40,8 +40,8 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
                 
-        // replace VERSION and mcversion
-        expand 'VERSION':project.version, 'mcversion':project.minecraft.version
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
     // copy everything else, thats not the mcmod.info
