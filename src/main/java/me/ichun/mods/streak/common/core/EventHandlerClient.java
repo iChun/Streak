@@ -1,6 +1,5 @@
 package me.ichun.mods.streak.common.core;
 
-import me.ichun.mods.ichunutil.client.module.patron.PatronTracker;
 import me.ichun.mods.ichunutil.client.render.entity.RenderLatchedRenderer;
 import me.ichun.mods.ichunutil.common.core.tracker.EntityTrackerRegistry;
 import me.ichun.mods.ichunutil.common.iChunUtil;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
