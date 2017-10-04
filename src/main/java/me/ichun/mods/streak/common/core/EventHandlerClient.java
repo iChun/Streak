@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -37,7 +38,7 @@ public class EventHandlerClient
         }
 
         AbstractClientPlayer player = (AbstractClientPlayer)event.ent.latchedEnt;
-        if(player == Minecraft.getMinecraft().thePlayer && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
+        if(player == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
             return;
         }
@@ -48,7 +49,7 @@ public class EventHandlerClient
         BufferedImage image;
 
         Integer flavour = Streak.flavourNames.get(Streak.config.favouriteFlavour.toLowerCase());
-        if(flavour != null && (Streak.config.playersFollowYourFavouriteFlavour == 1 && player != Minecraft.getMinecraft().thePlayer || player == Minecraft.getMinecraft().thePlayer))
+        if(flavour != null && (Streak.config.playersFollowYourFavouriteFlavour == 1 && player != Minecraft.getMinecraft().player || player == Minecraft.getMinecraft().player))
         {
             image = Streak.flavours.get(flavour);
         }
@@ -81,16 +82,16 @@ public class EventHandlerClient
                 AbstractClientPlayer playerRender = player;
                 if(iChunUtil.hasMorphMod() && MorphApi.getApiImpl().hasMorph(player.getName(), Side.CLIENT))
                 {
-                    if(MorphApi.getApiImpl().getMorphEntity(player.worldObj, player.getName(), Side.CLIENT) instanceof AbstractClientPlayer && MorphApi.getApiImpl().morphProgress(player.getName(), Side.CLIENT) >= 1.0F)
+                    if(MorphApi.getApiImpl().getMorphEntity(player.world, player.getName(), Side.CLIENT) instanceof AbstractClientPlayer && MorphApi.getApiImpl().morphProgress(player.getName(), Side.CLIENT) >= 1.0F)
                     {
-                        playerRender = (AbstractClientPlayer)MorphApi.getApiImpl().getMorphEntity(player.worldObj, player.getName(), Side.CLIENT);
+                        playerRender = (AbstractClientPlayer)MorphApi.getApiImpl().getMorphEntity(player.world, player.getName(), Side.CLIENT);
                     }
                     else
                     {
                         return;
                     }
                 }
-                ModelBase biped = ((RenderPlayer)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(playerRender)).mainModel;
+                ModelBase biped = ((RenderPlayer)(Render)Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(playerRender)).mainModel;
 
                 ResourceLocation rl = playerRender.getLocationSkin();
                 for(int ii = 1; ii < 6; ii++)
@@ -109,16 +110,16 @@ public class EventHandlerClient
                     if(entInfo.elytraFlying)
                     {
                         float f = (float)playerRender.getTicksElytraFlying() + event.partialTick;
-                        float f1 = MathHelper.clamp_float(f * f / 100.0F, 0.0F, 1.0F);
+                        float f1 = MathHelper.clamp(f * f / 100.0F, 0.0F, 1.0F);
                         GlStateManager.rotate(f1 * (-90.0F - playerRender.rotationPitch), -1.0F, 0.0F, 0.0F);
                         Vec3d vec3d = playerRender.getLook(event.partialTick);
                         double d0 = playerRender.motionX * playerRender.motionX + playerRender.motionZ * playerRender.motionZ;
-                        double d1 = vec3d.xCoord * vec3d.xCoord + vec3d.zCoord * vec3d.zCoord;
+                        double d1 = vec3d.x * vec3d.x + vec3d.z * vec3d.z;
 
                         if(d0 > 0.0D && d1 > 0.0D)
                         {
-                            double d2 = (playerRender.motionX * vec3d.xCoord + playerRender.motionZ * vec3d.zCoord) / (Math.sqrt(d0) * Math.sqrt(d1));
-                            double d3 = playerRender.motionX * vec3d.zCoord - playerRender.motionZ * vec3d.xCoord;
+                            double d2 = (playerRender.motionX * vec3d.x + playerRender.motionZ * vec3d.z) / (Math.sqrt(d0) * Math.sqrt(d1));
+                            double d3 = playerRender.motionX * vec3d.z - playerRender.motionZ * vec3d.x;
                             GlStateManager.rotate((float)(Math.signum(d3) * Math.acos(d2)) * 180.0F / (float)Math.PI, 0.0F, 1.0F, 0.0F);
                         }
                     }
@@ -129,7 +130,7 @@ public class EventHandlerClient
 
                     GlStateManager.translate(0.0F, -1.5F, 0.0F);
 
-                    float alpha = 1.0F - MathHelper.clamp_float(((ii - 1) + event.partialTick) / 5F, 0.0F, 1.0F);//1.0F - MathHelper.clamp_float(((float)(loc.size() - 2 - i) + partialTick) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
+                    float alpha = 1.0F - MathHelper.clamp(((ii - 1) + event.partialTick) / 5F, 0.0F, 1.0F);//1.0F - MathHelper.clamp(((float)(loc.size() - 2 - i) + partialTick) / (float)((loc.size() - 2) > 5 ? 5 : loc.size() - 2), 0.0F, 1.0F);
 
                     GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
 
@@ -178,7 +179,7 @@ public class EventHandlerClient
             }
 
             Tessellator tessellator = Tessellator.getInstance();
-            VertexBuffer vertexbuffer = tessellator.getBuffer();
+            BufferBuilder vertexbuffer = tessellator.getBuffer();
 
             vertexbuffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_TEX_COLOR);
 
@@ -204,7 +205,7 @@ public class EventHandlerClient
             GlStateManager.enableLighting();
             RenderHelper.enableStandardItemLighting();
 
-            i = player.getBrightnessForRender(event.partialTick);
+            i = player.getBrightnessForRender();
             j = i % 0x10000;
             k = i / 0x10000;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
