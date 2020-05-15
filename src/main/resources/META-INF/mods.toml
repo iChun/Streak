@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[31,)" #forge version dep
+issueTrackerURL="https://github.com/iChun/Streak/issues"
+
+[[mods]]
+    modId="streak"
+    version="${file.jarVersion}" #mandatory
+    displayName="Streak"
+    displayURL="https://ichun.me/mods/streak/"
+    authors="iChun"
+    description='''
+    Streak mod, a clientside trail-rendering effect for players.
+    '''
+
+[[dependencies.streak]]
+    modId="forge"
+    mandatory=true
+    versionRange="[31,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.streak]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2,1.16)"
+    ordering="NONE"
+    side="BOTH"
