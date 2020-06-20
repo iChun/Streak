@@ -1,15 +1,15 @@
 {
   "streak.config.cat.basics.name": "Basico",
 
-  "streak.config.cat.basics.comment": "Propiedades Basicas del mod.",
+  "streak.config.cat.basics.desc": "Propiedades Basicas del mod.",
 
   "streak.config.prop.streakTime.name": "Hora de Streak",
   "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Estela del Jugador",
   "streak.config.prop.sprintTrail.name": "Estela de Velocidad",
   "streak.config.prop.favouriteFlavour.name": "Estela Favorita",
 
-  "streak.config.prop.streakTime.comment": "Que largo (en segundos) los streaks duran?",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.comment": "Los Jugadores siguen tu estela favorita?",
-  "streak.config.prop.sprintTrail.comment": "Reproducir la estela de velocidad de un jugador?",
-  "streak.config.prop.favouriteFlavour.comment": "Cual es tu estela favorita?\nPon el nombre en la configuracion\nDejala sin numero para tener una estela diferente por persona."
+  "streak.config.prop.streakTime.desc": "Que largo (en segundos) los streaks duran?",
+  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "Los Jugadores siguen tu estela favorita?",
+  "streak.config.prop.sprintTrail.desc": "Reproducir la estela de velocidad de un jugador?",
+  "streak.config.prop.favouriteFlavour.desc": "Cual es tu estela favorita?\nPon el nombre en la configuracion\nDejala sin numero para tener una estela diferente por persona."
 }

@@ -2,6 +2,7 @@ package me.ichun.mods.streak.common.tracker;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import me.ichun.mods.ichunutil.client.render.RenderHelper;
 import me.ichun.mods.ichunutil.client.tracker.entity.EntityTracker;
 import me.ichun.mods.ichunutil.client.tracker.tag.Tag;
 import me.ichun.mods.ichunutil.common.util.ObfHelper;
@@ -236,7 +237,7 @@ public class StreakTag
                     matrixStackIn.translate(x, y, z);
                     matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - si.yawOffset));
                     matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-                    ObfHelper.invokePreRenderCallback(renderer, renderer.getClass(), (LivingEntity)tracker.parent, matrixStackIn, partialTicks);
+                    RenderHelper.invokePreRenderCallback(renderer, (LivingEntity)tracker.parent, matrixStackIn, partialTicks);
                     matrixStackIn.translate(0.0D, (double)-1.501F, 0.0D);
                     model.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, ((Streak.config.sprintTrail + 1) - (i + partialTicks)) / (float)(Streak.config.sprintTrail) * 1F);
                     matrixStackIn.pop();

@@ -1,11 +1,12 @@
 package me.ichun.mods.streak.common.core;
 
-import me.ichun.mods.ichunutil.client.render.BufferedImageTexture;
+import me.ichun.mods.ichunutil.client.render.NativeImageTexture;
 import me.ichun.mods.ichunutil.client.tracker.ClientEntityTracker;
 import me.ichun.mods.ichunutil.client.tracker.entity.EntityTracker;
 import me.ichun.mods.streak.common.Streak;
 import me.ichun.mods.streak.common.tracker.StreakTag;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +14,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -60,24 +60,24 @@ public class EventHandler
         @Nonnull
         public final String name;
         @Nonnull
-        private final BufferedImage image;
+        private final NativeImage image;
 
-        public BufferedImageTexture bufferedImageTexture;
+        public NativeImageTexture nativeImageTexture;
 
-        public FlavourInfo(String name, BufferedImage image) {
+        public FlavourInfo(String name, NativeImage image) {
             this.name = name;
             this.image = image;
         }
 
         public ResourceLocation getResourceLocation()
         {
-            if(bufferedImageTexture == null)
+            if(nativeImageTexture == null)
             {
-                bufferedImageTexture = new BufferedImageTexture(image);
-                Minecraft.getInstance().getTextureManager().loadTexture(bufferedImageTexture.getResourceLocation(), bufferedImageTexture);
+                nativeImageTexture = new NativeImageTexture(image);
+                Minecraft.getInstance().getTextureManager().loadTexture(nativeImageTexture.getResourceLocation(), nativeImageTexture);
             }
 
-            return bufferedImageTexture.getResourceLocation();
+            return nativeImageTexture.getResourceLocation();
         }
 
         @Override
