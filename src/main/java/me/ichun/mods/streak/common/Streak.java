@@ -35,7 +35,7 @@ public class Streak
 
     public static EventHandler eventHandler;
 
-    public Streak() //TODO add iChunUtil dep. Version checker???
+    public Streak() //TODO Version checker???
     {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             config = new Config().init();
