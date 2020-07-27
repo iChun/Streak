@@ -1,15 +1,15 @@
 {
-  "streak.config.cat.basics.name": "Alapok",
+  "config.streak.cat.basics.name": "Alapok",
 
-  "streak.config.cat.basics.desc": "Alap mod tulajdonságok.",
+  "config.streak.cat.basics.desc": "Alap mod tulajdonságok.",
 
-  "streak.config.prop.streakTime.name": "Sorozat idő",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Játékos Íz",
-  "streak.config.prop.sprintTrail.name": "Futás Nyomvonal",
-  "streak.config.prop.favouriteFlavour.name": "Kedvenc Íz",
+  "config.streak.prop.streakTime.name": "Sorozat idő",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.name": "Játékos Íz",
+  "config.streak.prop.sprintTrail.name": "Futás Nyomvonal",
+  "config.streak.prop.favouriteFlavour.name": "Kedvenc Íz",
 
-  "streak.config.prop.streakTime.desc": "Meddig tartson egy sorozat?(tick-ben)",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "Kövessék a játékosok a kedvenc ízedet?",
-  "streak.config.prop.sprintTrail.desc": "Lerendereljem a játékosok nyomvonalát?",
-  "streak.config.prop.favouriteFlavour.desc": "Mi a kedvenc ízed\nÍrd le a konfig szerint\nHagyd hibáson a véletlen ízért minden emberen."
+  "config.streak.prop.streakTime.desc": "Meddig tartson egy sorozat?(tick-ben)",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.desc": "Kövessék a játékosok a kedvenc ízedet?",
+  "config.streak.prop.sprintTrail.desc": "Lerendereljem a játékosok nyomvonalát?",
+  "config.streak.prop.favouriteFlavour.desc": "Mi a kedvenc ízed\nÍrd le a konfig szerint\nHagyd hibáson a véletlen ízért minden emberen."
 }

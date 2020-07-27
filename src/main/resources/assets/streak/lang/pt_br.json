@@ -1,15 +1,15 @@
 {
-  "streak.config.cat.basics.name": "Básicos",
+  "config.streak.cat.basics.name": "Básicos",
 
-  "streak.config.cat.basics.desc": "Propriedades básicas do mod.",
+  "config.streak.cat.basics.desc": "Propriedades básicas do mod.",
 
-  "streak.config.prop.streakTime.name": "Tempo da Risca",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Sabor do Jogador",
-  "streak.config.prop.sprintTrail.name": "Trilha de Corrida",
-  "streak.config.prop.favouriteFlavour.name": "Sabor Favorito",
+  "config.streak.prop.streakTime.name": "Tempo da Risca",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.name": "Sabor do Jogador",
+  "config.streak.prop.sprintTrail.name": "Trilha de Corrida",
+  "config.streak.prop.favouriteFlavour.name": "Sabor Favorito",
 
-  "streak.config.prop.streakTime.desc": "Por quanto tempo (em ticks) as riscas duram?",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "Jogadores seguem seu sabor favorito?",
-  "streak.config.prop.sprintTrail.desc": "Renderizar a trilha de corrida de um jogador?",
-  "streak.config.prop.favouriteFlavour.desc": "Qual é o seu sabor favorito?\nPonha o nome igual ao da config\nDeixe como um nome errado para uma risca aleatória por pessoa."
+  "config.streak.prop.streakTime.desc": "Por quanto tempo (em ticks) as riscas duram?",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.desc": "Jogadores seguem seu sabor favorito?",
+  "config.streak.prop.sprintTrail.desc": "Renderizar a trilha de corrida de um jogador?",
+  "config.streak.prop.favouriteFlavour.desc": "Qual é o seu sabor favorito?\nPonha o nome igual ao da config\nDeixe como um nome errado para uma risca aleatória por pessoa."
 }

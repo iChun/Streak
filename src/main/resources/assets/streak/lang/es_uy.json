@@ -1,15 +1,15 @@
 {
-  "streak.config.cat.basics.name": "Basicos",
+  "config.streak.cat.basics.name": "Basicos",
 
-  "streak.config.cat.basics.desc": "Propiedades basicas del mod.",
+  "config.streak.cat.basics.desc": "Propiedades basicas del mod.",
 
-  "streak.config.prop.streakTime.name": "Tiempo de la trazada",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Tu trazada",
-  "streak.config.prop.sprintTrail.name": "Trazado del sprint",
-  "streak.config.prop.favouriteFlavour.name": "Trazada favorita",
+  "config.streak.prop.streakTime.name": "Tiempo de la trazada",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.name": "Tu trazada",
+  "config.streak.prop.sprintTrail.name": "Trazado del sprint",
+  "config.streak.prop.favouriteFlavour.name": "Trazada favorita",
 
-  "streak.config.prop.streakTime.desc": "¿Cuanto tiempo (en ticks) durara la trazada?",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "¿Hacer que los jugadores sigan tu flavour favorita?",
-  "streak.config.prop.sprintTrail.desc": "¿Mostrar la trazada de sprint de un jugador?",
-  "streak.config.prop.favouriteFlavour.desc": "¿Cual es tu trazada favorita?\nPon el nombre de ella en las configuraciones\nDejarlo en blanco equivale a una trazada al azar."
+  "config.streak.prop.streakTime.desc": "¿Cuanto tiempo (en ticks) durara la trazada?",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.desc": "¿Hacer que los jugadores sigan tu flavour favorita?",
+  "config.streak.prop.sprintTrail.desc": "¿Mostrar la trazada de sprint de un jugador?",
+  "config.streak.prop.favouriteFlavour.desc": "¿Cual es tu trazada favorita?\nPon el nombre de ella en las configuraciones\nDejarlo en blanco equivale a una trazada al azar."
 }

@@ -1,15 +1,15 @@
 {
-  "streak.config.cat.basics.name": "Básico",
+  "config.streak.cat.basics.name": "Básico",
 
-  "streak.config.cat.basics.desc": "Propiedades Básicas del Mod.",
+  "config.streak.cat.basics.desc": "Propiedades Básicas del Mod.",
 
-  "streak.config.prop.streakTime.name": "Tiempo del rastro",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Rastro del jugador",
-  "streak.config.prop.sprintTrail.name": "Rastro en sprint",
-  "streak.config.prop.favouriteFlavour.name": "Rastro favorito",
+  "config.streak.prop.streakTime.name": "Tiempo del rastro",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.name": "Rastro del jugador",
+  "config.streak.prop.sprintTrail.name": "Rastro en sprint",
+  "config.streak.prop.favouriteFlavour.name": "Rastro favorito",
 
-  "streak.config.prop.streakTime.desc": "¿Cuánto tiempo (en ticks, 1 tick = 1/20 segundos) duran los rastros?  ",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "¿Los jugadores siguen tu tipo de rastro favorito?",
-  "streak.config.prop.sprintTrail.desc": "¿Mostrar el rastro del jugador al sprintar?",
-  "streak.config.prop.favouriteFlavour.desc": "¿Cuál es tu tipo de rastro favorito?\nPon el nombre en la configuración\nDéjala en blanco para un rastro aleatorio por persona."
+  "config.streak.prop.streakTime.desc": "¿Cuánto tiempo (en ticks, 1 tick = 1/20 segundos) duran los rastros?  ",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.desc": "¿Los jugadores siguen tu tipo de rastro favorito?",
+  "config.streak.prop.sprintTrail.desc": "¿Mostrar el rastro del jugador al sprintar?",
+  "config.streak.prop.favouriteFlavour.desc": "¿Cuál es tu tipo de rastro favorito?\nPon el nombre en la configuración\nDéjala en blanco para un rastro aleatorio por persona."
 }

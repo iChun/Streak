@@ -5,17 +5,20 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import me.ichun.mods.ichunutil.client.render.RenderHelper;
 import me.ichun.mods.ichunutil.client.tracker.entity.EntityTracker;
 import me.ichun.mods.ichunutil.client.tracker.tag.Tag;
-import me.ichun.mods.ichunutil.common.util.ObfHelper;
 import me.ichun.mods.streak.common.Streak;
 import me.ichun.mods.streak.common.core.EventHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -107,7 +110,7 @@ public class StreakTag
         {
             return;
         }
-//        boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.thirdPersonView == 0 && !(Minecraft.getInstance().currentScreen instanceof InventoryScreen || Minecraft.getInstance().currentScreen instanceof CreativeScreen));
+        //        boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.thirdPersonView == 0 && !(Minecraft.getInstance().currentScreen instanceof InventoryScreen || Minecraft.getInstance().currentScreen instanceof CreativeScreen));
         boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.thirdPersonView == 0);
         if(firstPerson && !Streak.config.renderInFirstPerson)
         {

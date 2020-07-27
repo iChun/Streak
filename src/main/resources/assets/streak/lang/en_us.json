@@ -1,15 +1,23 @@
 {
-  "streak.config.cat.basics.name": "Basics",
+  "config.streak.cat.basics.name": "Basics",
 
-  "streak.config.cat.basics.desc": "Basic mod properties.",
+  "config.streak.cat.basics.desc": "Basic mod properties.",
 
-  "streak.config.prop.streakTime.name": "Streak Time",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.name": "Player Flavour",
-  "streak.config.prop.sprintTrail.name": "Sprint Trail",
-  "streak.config.prop.favouriteFlavour.name": "Favourite Flavour",
+  "config.streak.prop.streakTime.name": "Streak Time",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.name": "Player Flavour",
+  "config.streak.prop.sprintTrail.name": "Sprint Trail",
+  "config.streak.prop.favouriteFlavour.name": "Favourite Flavour",
+  "config.streak.prop.streakOpacity.name": "Streak Opacity",
+  "config.streak.prop.renderInFirstPerson.name": "Render in First Person",
+  "config.streak.prop.attachTo.name": "Entities to Attach To",
+  "config.streak.prop.setFlavors.name": "Set Flavors For",
 
-  "streak.config.prop.streakTime.desc": "How long (in ticks) do streaks last?",
-  "streak.config.prop.playersFollowYourFavouriteFlavour.desc": "Do players follow your favourite flavour?",
-  "streak.config.prop.sprintTrail.desc": "Render a player's sprint trail?",
-  "streak.config.prop.favouriteFlavour.desc": "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person."
+  "config.streak.prop.streakTime.desc": "How long (in ticks) do streaks last?",
+  "config.streak.prop.playersFollowYourFavouriteFlavour.desc": "Do players follow your favourite flavour?",
+  "config.streak.prop.sprintTrail.desc": "Render a player's sprint trail?",
+  "config.streak.prop.favouriteFlavour.desc": "What's your favourite flavour?\nPut the name of it as the config\nLeave it as a mismatching name for a random flavour per person.",
+  "config.streak.prop.streakOpacity.desc": "What's the opacity of streaks, in %",
+  "config.streak.prop.renderInFirstPerson.desc": "Should streaks render in first person",
+  "config.streak.prop.attachTo.desc": "Which entities to attach streaks to, using the resource name, EG: minecraft:pig",
+  "config.streak.prop.setFlavors.desc": "Who (by name) should have specific flavours, EG: iChun:Nyan"
 }
