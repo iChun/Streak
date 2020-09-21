@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix3f;
@@ -111,7 +112,7 @@ public class StreakTag
             return;
         }
         //        boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.thirdPersonView == 0 && !(Minecraft.getInstance().currentScreen instanceof InventoryScreen || Minecraft.getInstance().currentScreen instanceof CreativeScreen));
-        boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.thirdPersonView == 0);
+        boolean firstPerson = (tracker.parent == Minecraft.getInstance().getRenderViewEntity() && Minecraft.getInstance().gameSettings.getPointOfView() == PointOfView.FIRST_PERSON);
         if(firstPerson && !Streak.config.renderInFirstPerson)
         {
             return;
